@@ -165,7 +165,7 @@ research_cleaned %>%
   )
 ```
 
-From the above spaghetti plot we can see that, for subjects in the control arm, their observation data remained roughly unchanged (with a very slight overall decrease) over the 8-week study period. The majority of the collected data ranged from ~-1.75 to ~3.75. For subjects in the experimental arm, we see an overall increasing trend of observation data, which means, overall, subjects in the experimental arm are getting higher observation data from week 1 to week 8. The actual interpretation of this will depend on the study context. 
+From the above spaghetti plot we can see that, for subjects in the control arm, their observation data remained roughly unchanged (with a very slight overall decrease) over the 8-week study period. The majority of the collected data ranged from ~-1.75 to ~3.75. For subjects in the experimental arm, we see an overall increasing trend of observation data, which means, overall, subjects in the experimental arm are getting higher observation data from week 1 to week 8. At week 8, subjects in the experimental arm have much higher data (3~7) than subjects the in the control arm (-1~2.5). The actual interpretation of this will depend on the study context.
 
 
 # Problem 3 
