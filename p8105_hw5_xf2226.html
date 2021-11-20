@@ -291,6 +291,28 @@ prop_test_function(baltimore_df)</code></pre>
   data = map(str_c(&quot;./data/case-control/&quot;,files), read_csv)
 )</code></pre>
 </div>
+<div id="problem-3" class="section level1">
+<h1>Problem 3</h1>
+<p>Importing the Data</p>
+<pre class="r"><code>set.seed(10)
+
+iris_with_missing = iris %&gt;% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %&gt;%
+  mutate(Species = as.character(Species))</code></pre>
+<p>Write a Function</p>
+<pre class="r"><code>fill_in_missing = function(x) {
+  if (is.numeric(x)) {
+    ifelse(is.na(x) == T, mean(x, na.rm = T), x)
+  }
+  if (is.character(x))　{
+    ifelse(is.na(x) == T, &quot;virginica&quot;, x)
+  }
+  
+   if (!is.numeric(x) &amp; !is.character(x)) {
+    stop(&quot;Argument x should be either numeric or character&quot;)
+  } 
+}</code></pre>
+</div>
 
 
 
