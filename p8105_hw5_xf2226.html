@@ -195,6 +195,21 @@ knitr::opts_chunk$set(
   message = F,
   warning = F 
   )</code></pre>
+<div id="problem-1" class="section level1">
+<h1>Problem 1</h1>
+<p>The code chunk below imports and cleans the data</p>
+<pre class="r"><code>homicide_df = 
+  read_csv(&quot;./data/homicide-data.csv&quot;, na = c(&quot;&quot;, &quot;Unknown&quot;)) %&gt;% 
+  mutate(
+    city_state = str_c(city, state),
+    resolution = case_when(
+      disposition == &quot;Closed without arrest&quot; ~ &quot;unsolved&quot;,
+      disposition == &quot;Open/No arrest&quot; ~ &quot;unsolved&quot;,
+      disposition == &quot;Closed by arrest&quot; ~ &quot;solved&quot;)
+    ) %&gt;% 
+  relocate(city_state) %&gt;% 
+  filter(city_state != &quot;TulsaAL&quot;)</code></pre>
+</div>
 
 
 
