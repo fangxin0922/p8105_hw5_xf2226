@@ -125,12 +125,28 @@ homicides_df %>%
 
 # Problem 2 
 
-Load and clean the case-control data
+Load the case-control data set
 ```{r}
 research_data = tibble(
   files = list.files("./data/case-control/"),
   data = map(str_c("./data/case-control/",files), read_csv)
 )
+```
+
+Tidy the result; manipulate file names to include control arm and subject ID, make sure weekly observations are “tidy”, and do any other tidying that’s necessary
+```{r}
+research_cleaned = 
+  research_data %>% 
+  unnest(data) %>% 
+  mutate(research_arm = ifelse(str_detect(files, "con"), "Control Arm", "Experimental Arm")) %>% 
+  mutate(subject_id = (substr(files, 5, 6))) %>% 
+  select(subject_id, research_arm, starts_with("week")) %>%
+  pivot_longer(
+    week_1:week_8,
+    names_to = "week",
+    names_prefix = "week_",
+    values_to = "data"
+  )
 ```
 
 # Problem 3 

@@ -285,11 +285,24 @@ prop_test_function(baltimore_df)</code></pre>
 </div>
 <div id="problem-2" class="section level1">
 <h1>Problem 2</h1>
-<p>Load and clean the case-control data</p>
+<p>Load the case-control data set</p>
 <pre class="r"><code>research_data = tibble(
   files = list.files(&quot;./data/case-control/&quot;),
   data = map(str_c(&quot;./data/case-control/&quot;,files), read_csv)
 )</code></pre>
+<p>Tidy the result; manipulate file names to include control arm and subject ID, make sure weekly observations are “tidy”, and do any other tidying that’s necessary</p>
+<pre class="r"><code>research_cleaned = 
+  research_data %&gt;% 
+  unnest(data) %&gt;% 
+  mutate(research_arm = ifelse(str_detect(files, &quot;con&quot;), &quot;Control Arm&quot;, &quot;Experimental Arm&quot;)) %&gt;% 
+  mutate(subject_id = (substr(files, 5, 6))) %&gt;% 
+  select(subject_id, research_arm, starts_with(&quot;week&quot;)) %&gt;%
+  pivot_longer(
+    week_1:week_8,
+    names_to = &quot;week&quot;,
+    names_prefix = &quot;week_&quot;,
+    values_to = &quot;data&quot;
+  )</code></pre>
 </div>
 <div id="problem-3" class="section level1">
 <h1>Problem 3</h1>
