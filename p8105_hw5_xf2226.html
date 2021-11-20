@@ -304,14 +304,15 @@ iris_with_missing = iris %&gt;%
   if (is.numeric(x)) {
     ifelse(is.na(x) == T, mean(x, na.rm = T), x)
   }
-  if (is.character(x))　{
+  else if (is.character(x))　{
     ifelse(is.na(x) == T, &quot;virginica&quot;, x)
   }
-  
-   if (!is.numeric(x) &amp; !is.character(x)) {
-    stop(&quot;Argument x should be either numeric or character&quot;)
+  else if (!is.numeric(x) &amp; !is.character(x)) {
+     x == &quot;Warning: Argument x neither numeric nor character&quot;
   } 
 }</code></pre>
+<p>Using the Function to fill in missing values in the iris data set</p>
+<pre class="r"><code>iris_without_missing = map_df(iris_with_missing, fill_in_missing)</code></pre>
 </div>
 
 
