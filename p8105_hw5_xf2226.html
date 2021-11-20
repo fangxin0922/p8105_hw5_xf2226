@@ -198,7 +198,7 @@ knitr::opts_chunk$set(
 <div id="problem-1" class="section level1">
 <h1>Problem 1</h1>
 <p>The code chunk below imports and cleans the data</p>
-<pre class="r"><code>homicide_df = 
+<pre class="r"><code>homicides_df = 
   read_csv(&quot;./data/homicide-data.csv&quot;, na = c(&quot;&quot;, &quot;Unknown&quot;)) %&gt;% 
   mutate(
     city_state = str_c(city, state),
@@ -209,6 +209,24 @@ knitr::opts_chunk$set(
     ) %&gt;% 
   relocate(city_state) %&gt;% 
   filter(city_state != &quot;TulsaAL&quot;)</code></pre>
+<p>Let’s focus on Baltimore MD</p>
+<pre class="r"><code>baltimore_df = 
+  homicides_df %&gt;% 
+  filter(city_state == &quot;BaltimoreMD&quot;)
+baltimore_summary = baltimore_df %&gt;% 
+  summarize(
+    unsolved = sum(resolution == &quot;unsolved&quot;),
+    n = n()
+  )
+balimtore_test = 
+  prop.test(x = baltimore_summary %&gt;% pull(unsolved), 
+          n = baltimore_summary %&gt;% pull(n))
+balimtore_test %&gt;% 
+  broom::tidy()</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##   estimate statistic  p.value parameter conf.low conf.high method    alternative
+##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;      
+## 1    0.646      239. 6.46e-54         1    0.628     0.663 1-sample… two.sided</code></pre>
 </div>
 
 

@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 # Problem 1 
 The code chunk below imports and cleans the data
 ```{r}
-homicide_df = 
+homicides_df = 
   read_csv("./data/homicide-data.csv", na = c("", "Unknown")) %>% 
   mutate(
     city_state = str_c(city, state),
@@ -39,5 +39,22 @@ homicide_df =
   filter(city_state != "TulsaAL")
 ```
 
+Let's focus on Baltimore MD 
+
+```{r}
+baltimore_df = 
+  homicides_df %>% 
+  filter(city_state == "BaltimoreMD")
+baltimore_summary = baltimore_df %>% 
+  summarize(
+    unsolved = sum(resolution == "unsolved"),
+    n = n()
+  )
+balimtore_test = 
+  prop.test(x = baltimore_summary %>% pull(unsolved), 
+          n = baltimore_summary %>% pull(n))
+balimtore_test %>% 
+  broom::tidy()
+```
 
 
