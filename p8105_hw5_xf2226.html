@@ -283,6 +283,14 @@ prop_test_function(baltimore_df)</code></pre>
 ## 10 CincinnatiOH     0.445    0.408     0.483
 ## # … with 40 more rows</code></pre>
 </div>
+<div id="problem-2" class="section level1">
+<h1>Problem 2</h1>
+<p>Load and clean the case-control data</p>
+<pre class="r"><code>research_data = tibble(
+  files = list.files(&quot;./data/case-control/&quot;),
+  data = map(str_c(&quot;./data/case-control/&quot;,files), read_csv)
+)</code></pre>
+</div>
 
 
 

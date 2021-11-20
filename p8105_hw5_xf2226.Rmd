@@ -123,4 +123,13 @@ homicides_df %>%
   select(city_state, estimate, starts_with("conf"))
 ```
 
+# Problem 2 
+
+Load and clean the case-control data
+```{r}
+research_data = tibble(
+  files = list.files("./data/case-control/"),
+  data = map(str_c("./data/case-control/",files), read_csv)
+)
+```
 
