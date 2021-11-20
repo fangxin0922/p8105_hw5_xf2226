@@ -45,16 +45,40 @@ Let's focus on Baltimore MD
 baltimore_df = 
   homicides_df %>% 
   filter(city_state == "BaltimoreMD")
+
 baltimore_summary = baltimore_df %>% 
   summarize(
     unsolved = sum(resolution == "unsolved"),
     n = n()
   )
-balimtore_test = 
+
+baltimore_test = 
   prop.test(x = baltimore_summary %>% pull(unsolved), 
           n = baltimore_summary %>% pull(n))
-balimtore_test %>% 
+
+baltimore_test %>% 
   broom::tidy()
 ```
 
+Let's try to iterate across cities
+
+First, write a function
+```{r}
+prop_test_function = function(city_df) {
+  city_summary = 
+    city_df %>% 
+    summarize(
+      unsolved = sum(resolution == "unsolved"),
+      n = n()
+    )
+  
+  city_test = 
+    prop.test(x = city_summary %>% pull(unsolved), 
+            n = city_summary %>% pull(n))
+  
+  return(city_test)
+}
+
+prop_test_function(baltimore_df)
+```
 

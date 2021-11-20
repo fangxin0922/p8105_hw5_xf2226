@@ -213,20 +213,52 @@ knitr::opts_chunk$set(
 <pre class="r"><code>baltimore_df = 
   homicides_df %&gt;% 
   filter(city_state == &quot;BaltimoreMD&quot;)
+
 baltimore_summary = baltimore_df %&gt;% 
   summarize(
     unsolved = sum(resolution == &quot;unsolved&quot;),
     n = n()
   )
-balimtore_test = 
+
+baltimore_test = 
   prop.test(x = baltimore_summary %&gt;% pull(unsolved), 
           n = baltimore_summary %&gt;% pull(n))
-balimtore_test %&gt;% 
+
+baltimore_test %&gt;% 
   broom::tidy()</code></pre>
 <pre><code>## # A tibble: 1 × 8
 ##   estimate statistic  p.value parameter conf.low conf.high method    alternative
 ##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;      
 ## 1    0.646      239. 6.46e-54         1    0.628     0.663 1-sample… two.sided</code></pre>
+<p>Let’s try to iterate across cities</p>
+<p>First, write a function</p>
+<pre class="r"><code>prop_test_function = function(city_df) {
+  city_summary = 
+    city_df %&gt;% 
+    summarize(
+      unsolved = sum(resolution == &quot;unsolved&quot;),
+      n = n()
+    )
+  
+  city_test = 
+    prop.test(x = city_summary %&gt;% pull(unsolved), 
+            n = city_summary %&gt;% pull(n))
+  
+  return(city_test)
+}
+
+prop_test_function(baltimore_df)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  city_summary %&gt;% pull(unsolved) out of city_summary %&gt;% pull(n), null probability 0.5
+## X-squared = 239, df = 1, p-value &lt;2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.628 0.663
+## sample estimates:
+##     p 
+## 0.646</code></pre>
 </div>
 
 
