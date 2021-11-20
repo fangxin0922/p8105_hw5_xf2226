@@ -125,7 +125,7 @@ homicides_df %>%
 
 # Problem 2 
 
-Load the case-control data set
+Load the control and experimental data set
 ```{r}
 research_data = tibble(
   files = list.files("./data/case-control/"),
@@ -148,6 +148,25 @@ research_cleaned =
     values_to = "data"
   )
 ```
+
+A spaghetti plot showing observations on each subject over time, and comment on differences between groups.
+```{r}
+research_cleaned %>% 
+  ggplot(aes(x = week, y = data, group = subject_id, color = subject_id)) +
+  geom_point() +
+  geom_line() + 
+  facet_grid(. ~ research_arm) +
+  theme(legend.position = "bottom", plot.title = element_text(hjust = 0.5)) +
+  labs(
+    title = "Observation Data For Each Subject from Week 1 to Week 8",
+    x = "Week",
+    y = "Data",
+    color = "Subject ID"
+  )
+```
+
+From the above spaghetti plot we can see that, for subjects in the control arm, their observation data remained roughly unchanged (with a very slight overall decrease) over the 8-week study period. The majority of the collected data ranged from ~-1.75 to ~3.75. For subjects in the experimental arm, we see an overall increasing trend of observation data, which means, overall, subjects in the experimental arm are getting higher observation data from week 1 to week 8. The actual interpretation of this will depend on the study context. 
+
 
 # Problem 3 
 Importing the Data
