@@ -172,29 +172,6 @@ pre code {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
-## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
-## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>theme_set(theme_minimal() + theme(legend.position = &quot;bottom&quot;))
-options(
-  ggplot2.continuous.colour = &quot;viridis&quot;,
-  ggplot2.continuous.fill = &quot;viridis&quot;,
-  digits = 3
-)
-scale_colour_discrete = scale_colour_viridis_d
-scale_fill_discrete = scale_fill_viridis_d 
-knitr::opts_chunk$set(
-  fig.height = 6,
-  fig.width = 8,
-  message = F,
-  warning = F 
-  )</code></pre>
 <div id="problem-1" class="section level1">
 <h1>Problem 1</h1>
 <p>The code chunk below imports and cleans the data</p>
@@ -259,6 +236,17 @@ prop_test_function(baltimore_df)</code></pre>
 ## sample estimates:
 ##     p 
 ## 0.646</code></pre>
+<p>Let’s map the function</p>
+<pre class="r"><code>results_df = 
+  homicides_df %&gt;% 
+  nest(data = uid:resolution) %&gt;% 
+  mutate(
+    test_results = map(data, prop_test_function),
+    tidy_results = map(test_results, broom::tidy)
+  ) %&gt;% 
+  select(city_state, tidy_results) %&gt;% 
+  unnest(tidy_results) %&gt;% 
+  select(city_state, estimate, starts_with(&quot;conf&quot;))</code></pre>
 </div>
 
 
